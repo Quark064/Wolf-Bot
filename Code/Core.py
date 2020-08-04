@@ -1,7 +1,6 @@
 from discord.ext import commands
 from config import botKey
-from GetStats import getStats
-from GetStats import formatText
+from GetStats import getStats, formatText
 
 bot = commands.Bot(command_prefix='~')
 
