@@ -9,6 +9,14 @@ standardLayout = "Wins: *{wins}*\nWin Rate: *{winRate}%*\nKills: *{kills}*\nK/D:
 divisor = 4
 
 
+class formatText:
+    def __init__(self, ctx):
+        splitstr = ctx.message.content.split(' ')
+        length = len(splitstr)
+        self.epicID = (' '.join(splitstr[1:(length)-1]))
+        self.input = (''.join(splitstr[(length-1):length]))
+
+
 def getStats(epicName, input):
 
     # Define Variables and Classes

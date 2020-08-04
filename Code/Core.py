@@ -1,35 +1,21 @@
-import discord
+from discord.ext import commands
 from config import botKey
 from GetStats import getStats
+from GetStats import formatText
 
-client = discord.Client()
+bot = commands.Bot(command_prefix='~')
 
 # STARTUP CODE_____________________________________________________________
-@client.event
+@bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('We have logged in as {0.user}'.format(bot))
 
-# Start the Bot
-@client.event
-async def on_message(message):
+# List Commands
+@bot.command()
+async def stats(ctx):
+    formatted = formatText(ctx)
+    loading = await ctx.send(content='Loading...')
+    await ctx.send(embed=getStats(formatted.epicID, formatted.input))
+    await loading.delete()
 
-    # Check if bot sent message.
-    if message.author == client.user:
-        return
-# _________________________________________________________________________
-
-# Check for Identification Mark
-    if message.content.startswith('~'):
-        # Run Functions
-
-        # Get Fortnite Stats (~stats [user] [input/console])
-        if message.content.startswith('~stats'):
-            splitstr = message.content.split(' ')
-            length = len(splitstr)
-            epicID = (' '.join(splitstr[1:(length)-1]))
-            input = (''.join(splitstr[(length-1):length]))
-
-            loading = await message.channel.send(content='Loading...')
-            await message.channel.send(embed=getStats(epicID, input))
-            await loading.delete()
-client.run(botKey)
+bot.run(botKey)
