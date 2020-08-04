@@ -1,7 +1,6 @@
 import discord
-from GetStats import getStats
 from config import botKey
-
+from GetStats import getStats
 
 client = discord.Client()
 
