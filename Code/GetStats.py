@@ -1,7 +1,7 @@
-import json
-import discord
-import requests
-import urllib.parse
+from json import loads
+from discord import Embed
+from requests import get
+from urllib.parse import quote
 from config import fortniteAPIKey
 
 # Set Global Variables (Need to be used in 'mode' class and 'getStats')
@@ -17,7 +17,7 @@ def getStats(epicName, input):
     img = ''
     errorPNG = "https://i.imgur.com/wunfgw0.png"
     lowerInput = str.lower(input)
-    encodedEpicName = urllib.parse.quote(epicName)
+    encodedEpicName = quote(epicName)
     global standardLayout
     global divisor
 
@@ -111,7 +111,7 @@ def getStats(epicName, input):
         inputType = 'All'
         img = 'https://i.imgur.com/LIzNl5f.jpg'
     else:
-        errorEmbed = discord.Embed(
+        errorEmbed = Embed(
             title="Error!",
             description="Invalid Input/Console",
             color=0xde2121
@@ -134,14 +134,14 @@ def getStats(epicName, input):
     token = fortniteAPIKey
 
     # Send Request
-    request = requests.get(url=requestURL, headers=token)
-    data = json.loads(request.text)
+    request = get(url=requestURL, headers=token)
+    data = loads(request.text)
 
     # Check For Valid Username in Response
     try:
         epicUserHandle = data['epicUserHandle']
     except Exception:
-        dataEmbed = discord.Embed(
+        dataEmbed = Embed(
             title="Error!",
             description="Invalid Username",
             color=0xde2121
@@ -162,7 +162,7 @@ def getStats(epicName, input):
     ltm = mode('ltm', 'LTM')
 
     # Configure Embed Layout
-    embed = discord.Embed(
+    embed = Embed(
         title="Fortnite Stats: {name}"
         .format(name=epicUserHandle),
         url='https://fortnitetracker.com/profile/all/{user}'
