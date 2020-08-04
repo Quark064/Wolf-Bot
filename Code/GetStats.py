@@ -27,20 +27,26 @@ def getStats(epicName, input):
             global standardLayout
             global divisor
             self.formalName = formalName
-            self.name = "**{mode}**".format(mode=self.formalName)
             try:
                 self.wins = data['stats'][mode]['top1']['value']
                 self.kills = data['stats'][mode]['kills']['value']
                 self.winRate = data['stats'][mode]['winRatio']['value']
                 self.KD = data['stats'][mode]['kd']['value']
+                self.matchCount = data['stats'][mode]['matches']['value']
                 self.hasData = True
             except Exception:
                 self.wins = 0
                 self.kills = 0
                 self.winRate = 0
                 self.KD = 0
+                self.matchCount = 0
                 self.hasData = False
                 divisor -= 1
+            # Has to be set later for self.matchCount to initialize
+            self.name = "**{mode}** ({games} matches)".format(
+                mode=self.formalName,
+                games=self.matchCount
+                )
 
             # Set Embed Values
             if self.hasData is False:
@@ -105,7 +111,6 @@ def getStats(epicName, input):
         inputType = 'All'
         img = 'https://i.imgur.com/LIzNl5f.jpg'
     else:
-        errorEmbed = discord.Embed()
         errorEmbed = discord.Embed(
             title="Error!",
             description="Invalid Input/Console",
@@ -185,7 +190,9 @@ def getStats(epicName, input):
         inline=True
     )
     embed.add_field(
-        name="**All Modes**",
+        name="**All Modes** ({games} matches)".format(
+            games = str(int(solo.matchCount)+int(duo.matchCount)+int(squad.matchCount)+int(ltm.matchCount))
+        ),
         value=standardLayout.format(
             wins=str(int(solo.wins)+int(duo.wins)+int(squad.wins)+int(ltm.wins)),
             winRate=str(round(((float(solo.winRate)+float(duo.winRate)+float(squad.winRate)+float(ltm.winRate))/divisor), 1)),

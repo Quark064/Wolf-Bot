@@ -21,6 +21,8 @@ async def on_message(message):
 # Check for Identification Mark
     if message.content.startswith('~'):
         # Run Functions
+
+        # Get Fortnite Stats (~stats [user] [input/console])
         if message.content.startswith('~stats'):
             splitstr = message.content.split(' ')
             length = len(splitstr)
