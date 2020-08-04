@@ -2,6 +2,7 @@ import json
 import discord
 import requests
 import urllib.parse
+from config import fortniteAPIKey
 
 # Set Global Variables (Need to be used in 'mode' class and 'getStats')
 standardLayout = "Wins: *{wins}*\nWin Rate: *{winRate}%*\nKills: *{kills}*\nK/D: *{kd}*"
@@ -125,7 +126,7 @@ def getStats(epicName, input):
         'https://api.fortnitetracker.com/v1/profile/{pt}/{name}'
         .format(pt=ptf, name=epicName)
         )
-    token = {'TRN-Api-Key': 'bdcb6787-4b1f-4cfe-98db-cb1dde561278'}
+    token = fortniteAPIKey
 
     # Send Request
     request = requests.get(url=requestURL, headers=token)

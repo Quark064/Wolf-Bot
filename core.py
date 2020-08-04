@@ -1,5 +1,7 @@
 import discord
 from GetStats import getStats
+from config import botKey
+
 
 client = discord.Client()
 
@@ -29,4 +31,4 @@ async def on_message(message):
             loading = await message.channel.send(content='Loading...')
             await message.channel.send(embed=getStats(epicID, input))
             await loading.delete()
-client.run('NjYzODg5MjUwMzI4MjQ4MzIw.XhPFCw.BZoNo_K4315Q30kWWfZO6ljh7js')
+client.run(botKey)
