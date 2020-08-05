@@ -22,13 +22,14 @@ async def stats(ctx):
 
 @bot.command()
 async def leaderboard(ctx):
+    definedNames = []
     loadingEmbed = Embed(
         title="Loading...",
         description="This will take some time",
         color=0x1167b1)
     loadingEmbed.set_thumbnail(url="https://i.imgur.com/Hq39MdR.gif")
     loading = await ctx.send(embed=loadingEmbed)
-    await ctx.send(embed=leaderBoardXPFormat())
+    await ctx.send(embed=leaderBoardXPFormat(definedNames))
     await loading.delete()
 
 bot.run(botKey)
