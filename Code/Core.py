@@ -1,6 +1,8 @@
+from discord import Embed
 from discord.ext import commands
 from config import botKey
 from GetStats import getStats, formatText
+from Leaderboard import leaderBoardXPFormat
 
 bot = commands.Bot(command_prefix='~')
 
@@ -15,6 +17,18 @@ async def stats(ctx):
     formatted = formatText(ctx)
     loading = await ctx.send(content='Loading...')
     await ctx.send(embed=getStats(formatted.epicID, formatted.input))
+    await loading.delete()
+
+
+@bot.command()
+async def leaderboard(ctx):
+    loadingEmbed = Embed(
+        title="Loading...",
+        description="This will take some time",
+        color=0x1167b1)
+    loadingEmbed.set_thumbnail(url="https://i.imgur.com/Hq39MdR.gif")
+    loading = await ctx.send(embed=loadingEmbed)
+    await ctx.send(embed=leaderBoardXPFormat())
     await loading.delete()
 
 bot.run(botKey)
