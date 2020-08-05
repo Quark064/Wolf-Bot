@@ -6,6 +6,7 @@ from BlobheartUserNames import fortniteHandles
 from time import sleep
 
 
+# Calls getLeaderBoardXP with either pre-set list or added commands
 def leaderBoardXPFormat(definedNames):
     if not definedNames:
         nameList = fortniteHandles
