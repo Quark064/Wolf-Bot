@@ -5,5 +5,7 @@ fortniteHandles = [
     '5xj',
     'SkyBlueNinja42',
     'Gwem_',
-    'tedi_spl'
+    'tedi_spl',
+    'bisexual pride',
+    'shovelpersona'
     ]

@@ -4,6 +4,30 @@ from requests import get
 from config import fortniteAPIKey
 from BlobheartUserNames import fortniteHandles
 from time import sleep
+import shlex
+
+
+def listMaker(ctx):
+    cleanStr = ctx.message.content.replace('~leaderboard ', '')
+    cleanStr = cleanStr.replace('~leaderboard', '')
+    return shlex.split(cleanStr)
+
+
+def generateErrorEmbed():
+    errorEmbed = Embed(
+        title="Error!",
+        description="Invalid Format!",
+        color=0xde2121
+        )
+    errorEmbed.set_thumbnail(
+        url="https://i.imgur.com/wunfgw0.png"
+        )
+    errorEmbed.add_field(
+        name='Usage:',
+        value='~leaderboard \'name1\' \'name2\' \'name3\'',
+        inline=True
+        )
+    return errorEmbed
 
 
 # Calls getLeaderBoardXP with either pre-set list or added commands
@@ -28,7 +52,7 @@ def leaderBoardXPFormat(definedNames):
         color=0x1167b1
     )
     scoreEmbed.set_thumbnail(url='https://i.imgur.com/LIzNl5f.jpg')
-    for x in range(len(fortniteHandles)):
+    for x in range(len(nameList)):
         scoreEmbed.add_field(
             name='{num})  **{name}**'.format(
                 num=(x+1),
@@ -57,7 +81,7 @@ def getLeaderBoardXP(nameList):
         score = data['lifeTimeStats'][6]['value']
         return int(score.replace(',', ''))
 
-    for x in range(len(fortniteHandles)):
+    for x in range(len(nameList)):
         scoreboard[nameList[x]] = getStats(nameList[x])
         # Sleep To Prevent API From Invalidating Request
         sleep(1)
