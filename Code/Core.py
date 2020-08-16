@@ -3,8 +3,14 @@ from discord.ext import commands
 from config import botKey
 from GetStats import getStats, formatText
 from Leaderboard import leaderBoardXPFormat, listMaker, generateErrorEmbed
+from PrimaryInput import getName, getPrimaryInput
 
 bot = commands.Bot(command_prefix='~')
+loadingEmbed = Embed(
+    title="Loading...",
+    description="This will take some time",
+    color=0x1167b1)
+loadingEmbed.set_thumbnail(url="https://i.imgur.com/Hq39MdR.gif")
 
 # STARTUP CODE_____________________________________________________________
 @bot.event
@@ -24,16 +30,19 @@ async def stats(ctx):
 async def leaderboard(ctx):
     definedNames = []
     definedNames = listMaker(ctx)
-    loadingEmbed = Embed(
-        title="Loading...",
-        description="This will take some time",
-        color=0x1167b1)
-    loadingEmbed.set_thumbnail(url="https://i.imgur.com/Hq39MdR.gif")
     loading = await ctx.send(embed=loadingEmbed)
     try:
         await ctx.send(embed=leaderBoardXPFormat(definedNames))
         await loading.delete()
     except Exception:
         await ctx.send(embed=generateErrorEmbed)
+
+
+@bot.command()
+async def input(ctx):
+    loading = await ctx.send(embed=loadingEmbed)
+    await ctx.send(embed=getPrimaryInput(getName(ctx)))
+    await loading.delete()
+
 
 bot.run(botKey)
