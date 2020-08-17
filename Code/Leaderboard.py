@@ -8,15 +8,18 @@ import shlex
 
 
 def listMaker(ctx):
-    cleanStr = ctx.message.content.replace('~leaderboard ', '')
-    cleanStr = cleanStr.replace('~leaderboard', '')
-    return shlex.split(cleanStr)
+    cleanStr = ctx.message.content.replace('~leaderboard', '')
+    try:
+        cleanStr = shlex.split(cleanStr)
+    except Exception:
+        return cleanStr
+    return cleanStr
 
 
 def generateErrorEmbed():
     errorEmbed = Embed(
         title="Error!",
-        description="Invalid Format!",
+        description="Invalid Format and/or Username(s)!",
         color=0xde2121
         )
     errorEmbed.set_thumbnail(
@@ -32,15 +35,25 @@ def generateErrorEmbed():
 
 # Calls getLeaderBoardXP with either pre-set list or added commands
 def leaderBoardXPFormat(definedNames):
+
     if not definedNames:
         nameList = fortniteHandles
+        print('Created leaderboard with pre-set Epic Names...')
     else:
         nameList = definedNames
-    scores = (dict(sorted(
-        getLeaderBoardXP(nameList).items(),
-        key=lambda x: x[1],
-        reverse=True
-        )))
+        print('Created leaderboard with name array "{}"...'.format(
+            definedNames
+            ))
+
+    try:
+        scores = (dict(sorted(
+            getLeaderBoardXP(nameList).items(),
+            key=lambda x: x[1],
+            reverse=True
+            )))
+    except KeyError:
+        return generateErrorEmbed()
+
     names = []
     values = []
     items = scores.items()
@@ -60,26 +73,25 @@ def leaderBoardXPFormat(definedNames):
             value='>> ' + ('*{}*'.format('{:,}'.format(values[x]) + ' XP')),
             inline=False
         )
-
+    print('Leaderboard Embed created and sent successfully.')
     return scoreEmbed
+
+
+def getStats(epicName):
+    requestURL = (
+        'https://api.fortnitetracker.com/v1/profile/all/{name}'
+        .format(name=epicName)
+        )
+    token = fortniteAPIKey
+    request = get(url=requestURL, headers=token)
+    data = loads(request.text)
+    score = data['lifeTimeStats'][6]['value']
+    return int(score.replace(',', ''))
 
 
 # Fetches the info for names in nameList and places them in a Dictionary
 def getLeaderBoardXP(nameList):
     scoreboard = {}
-
-    def getStats(epicName):
-        requestURL = (
-            'https://api.fortnitetracker.com/v1/profile/all/{name}'
-            .format(name=epicName)
-            )
-        token = fortniteAPIKey
-
-        request = get(url=requestURL, headers=token)
-        data = loads(request.text)
-
-        score = data['lifeTimeStats'][6]['value']
-        return int(score.replace(',', ''))
 
     for x in range(len(nameList)):
         scoreboard[nameList[x]] = getStats(nameList[x])

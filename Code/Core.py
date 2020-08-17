@@ -2,10 +2,11 @@ from discord import Embed
 from discord.ext import commands
 from config import botKey
 from GetStats import getStats, formatText
-from Leaderboard import leaderBoardXPFormat, listMaker, generateErrorEmbed
+from Leaderboard import leaderBoardXPFormat, listMaker
 from PrimaryInput import getName, getPrimaryInput
 
 bot = commands.Bot(command_prefix='~')
+
 loadingEmbed = Embed(
     title="Loading...",
     description="This will take some time",
@@ -31,11 +32,8 @@ async def leaderboard(ctx):
     definedNames = []
     definedNames = listMaker(ctx)
     loading = await ctx.send(embed=loadingEmbed)
-    try:
-        await ctx.send(embed=leaderBoardXPFormat(definedNames))
-        await loading.delete()
-    except Exception:
-        await ctx.send(embed=generateErrorEmbed)
+    await ctx.send(embed=leaderBoardXPFormat(definedNames))
+    await loading.delete()
 
 
 @bot.command()

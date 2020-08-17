@@ -1,7 +1,7 @@
 fortniteHandles = [
     'Wolfer473',
     'The Bellyman',
-    'Hilcooo',
+    'milkyhilky',
     '5xj',
     'SkyBlueNinja42',
     'Gwem_',

@@ -93,5 +93,5 @@ def getPrimaryInput(epicID):
     inputEmbed.set_thumbnail(
         url=img
         )
-
+    print('Successfully gathered input type for "{}".'.format(epicUserHandle))
     return inputEmbed

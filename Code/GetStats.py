@@ -161,6 +161,7 @@ def getStats(epicName, input):
             name="Command Usage:",
             value='~stats [Epic Username] [Input]',
             inline=True)
+        print("Couldn't find data for specified user.")
         return dataEmbed
 
 # Extract Data From JSON Using 'mode' Class
@@ -215,5 +216,6 @@ def getStats(epicName, input):
 
     # Reset Division Multiplier
     divisor = 4
+    print('Successfully gathered stats for "{}".'.format(epicUserHandle))
 
     return embed
