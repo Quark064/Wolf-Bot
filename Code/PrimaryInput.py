@@ -38,7 +38,7 @@ def getPrimaryInput(epicID):
     inputTypes = ['touch', 'gamepad', 'kbm']
     errorEmbed = Embed(
             title="Error!",
-            description="Invalid Username",
+            description="Invalid Username/No Data",
             color=0xde2121
             )
     errorEmbed.set_thumbnail(
