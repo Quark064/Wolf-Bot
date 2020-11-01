@@ -1,6 +1,5 @@
 from discord import Embed
 from datetime import datetime
-import json
 
 nameList = {
   0: ['Jaygo','Passing','<@265265506309636096>'],
