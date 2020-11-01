@@ -4,6 +4,7 @@ from config import botKey
 from GetStats import getStats, formatText
 from Leaderboard import leaderBoardXPFormat, listMaker
 from PrimaryInput import getName, getPrimaryInput
+from NNN import leadEmbed, nnnFail, nnnReset
 
 bot = commands.Bot(command_prefix='~')
 
@@ -42,5 +43,17 @@ async def input(ctx):
     await ctx.send(embed=getPrimaryInput(getName(ctx)))
     await loading.delete()
 
+@bot.command()
+async def nnn(ctx):
+    await ctx.send(embed=leadEmbed())
+
+@bot.command()
+async def nnnfail(ctx):
+    await ctx.send(content='{} has failed!'.format(nnnFail(ctx)))
+
+
+@bot.command()
+async def nnnreset(ctx):
+    await ctx.send(content="{}'s status has been restored".format(nnnReset(ctx)))
 
 bot.run(botKey)
