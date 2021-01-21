@@ -50,10 +50,34 @@ async def nnn(ctx):
 @bot.command()
 async def nnnfail(ctx):
     await ctx.send(content='{} has failed!'.format(nnnFail(ctx)))
+    await ctx.send(embed=leadEmbed())
 
 
 @bot.command()
 async def nnnreset(ctx):
     await ctx.send(content="{}'s status has been restored".format(nnnReset(ctx)))
+
+@bot.event
+async def on_message(message):
+    try:
+
+        print('{server} > {channel} ({id}) > {user}: {message}'.format(
+        server = message.guild,
+        channel = message.channel,
+        id = message.channel.id,
+        user = message.author.name,
+        message = message.content
+        ))
+
+        for x in range(len(message.attachments)):
+            print("\x1b]8;;{link}\a{linkText}\x1b]8;;\a".format(
+            link = message.attachments[x].url,
+            linkText = "Image {}".format(x)
+            ))
+
+    except Exception:
+        print('Unknown Message/Error')
+
+    await bot.process_commands(message)
 
 bot.run(botKey)
