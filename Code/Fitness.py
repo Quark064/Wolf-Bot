@@ -12,14 +12,21 @@ def updatePoints(ctx, points):
         if str(ctx.message.author.mention) == nameList[x][2]:
             nameList[x][1] += points
 
-def getPoints(min, cal):
-    calPoints = int((cal / 700) * 100)
-    minPoints = int((min / 30) * 100)
-    return (calPoints + minPoints)
-
 def fitnessLeaderboard():
     leadEmbed = Embed(title='**Fitness Leaderboard**', color=0x23b356)
     leadEmbed.set_footer(text="Use ~fitness to add a workout!")
+
     for x in range(len(nameList)):
         leadEmbed.add_field(name='**{}**'.format(nameList[x][0]), value=nameList[x][1], inline=True)
+
     return leadEmbed
+
+def fitMain(ctx):
+    new = ctx.message.content.split(" ")
+
+    try:
+        min = int(new[1])
+    except Exception:
+        print("Sorry, that doesn't look like a valid number... Try running the command again.")
+
+    updatePoints(ctx, (int((min / 700) * 100)))

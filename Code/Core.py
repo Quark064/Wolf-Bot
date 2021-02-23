@@ -5,7 +5,7 @@ from GetStats import getStats, formatText
 from Leaderboard import leaderBoardXPFormat, listMaker
 from PrimaryInput import getName, getPrimaryInput
 from NNN import leadEmbed, nnnFail, nnnReset
-from Fitness import updatePoints, getPoints, fitnessLeaderboard
+from Fitness import updatePoints, fitnessLeaderboard, fitMain
 
 bot = commands.Bot(command_prefix='~')
 
@@ -61,15 +61,7 @@ async def nnnreset(ctx):
 
 @bot.command()
 async def fitness(ctx):
-    notInt = "Sorry, that doesn't look like a valid number... Try running the command again."
-    new = ctx.message.content.split(" ")
-    try:
-        min = int(new[1])
-        cal = int(new[2])
-    except Exception:
-        print(notInt)
-
-    updatePoints(ctx, getPoints(min, cal))
+    fitMain(ctx)
     await ctx.send(embed=fitnessLeaderboard())
 
 @bot.event
