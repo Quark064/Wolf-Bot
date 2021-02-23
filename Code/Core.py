@@ -5,14 +5,14 @@ from GetStats import getStats, formatText
 from Leaderboard import leaderBoardXPFormat, listMaker
 from PrimaryInput import getName, getPrimaryInput
 from NNN import leadEmbed, nnnFail, nnnReset
-from Fitness import updatePoints, fitnessLeaderboard, fitMain
+from Fitness import updatePoints, fitnessLeaderboard, fitMain, fitResetBoard
 
 bot = commands.Bot(command_prefix='~')
 
 # Config Options
 debugMessageLog = False
 
-
+# Common Assets
 loadingEmbed = Embed(
     title="Loading...",
     description="This will take some time",
@@ -24,7 +24,9 @@ loadingEmbed.set_thumbnail(url="https://i.imgur.com/Hq39MdR.gif")
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
-# List Commands
+# List BOT Commands________________________________________________________
+
+# Fortnite Commands
 @bot.command()
 async def stats(ctx):
     formatted = formatText(ctx)
@@ -46,6 +48,7 @@ async def input(ctx):
     await ctx.send(embed=getPrimaryInput(getName(ctx)))
     await loading.delete()
 
+# NNN Commands
 @bot.command()
 async def nnn(ctx):
     await ctx.send(embed=leadEmbed())
@@ -59,11 +62,23 @@ async def nnnfail(ctx):
 async def nnnreset(ctx):
     await ctx.send(content="{}'s status has been restored".format(nnnReset(ctx)))
 
+# Fitness Challenge Commands
 @bot.command()
 async def fitness(ctx):
     fitMain(ctx)
     await ctx.send(embed=fitnessLeaderboard())
 
+@bot.command()
+async def fitleaderboard():
+    await ctx.send(embed=fitnessLeaderboard())
+
+@bot.command()
+async def fitboardreset(ctx):
+    await ctx.send(content="{}'s points have been reset!".format(fitResetBoard(ctx)))
+    await ctx.send(embed=fitnessLeaderboard())
+
+
+# Other Per Message Commands
 @bot.event
 async def on_message(message):
     if debugMessageLog == True:

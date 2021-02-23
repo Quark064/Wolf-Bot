@@ -1,23 +1,33 @@
+import json
+import os
 from discord import Embed
 
-nameList = {
-  0: ["Will", 0,"<@285571155950043137>"],
-  1: ["Jasmine", 0,"<@418901709713178634>"],
-  2: ["Ta'Mariah", 0,"<@562762988571066368>"]
-}
+jsonStorage = os.path.join(os.getcwd(), "Code", "FitnessStorage.json")
 
+def loadJSON():
+    with open(jsonStorage, "r+") as file:
+        data = json.load(file)
+        return data
+
+def writeJSON(var):
+    f = open(jsonStorage, "w")
+    f.write(json.dumps(var))
+    f.close()
 
 def updatePoints(ctx, points):
+    nameList = loadJSON()
     for x in range(len(nameList)):
-        if str(ctx.message.author.mention) == nameList[x][2]:
-            nameList[x][1] += points
+        if str(ctx.message.author.mention) == nameList[str(x)][2]:
+            nameList[str(x)][1] += points
+            writeJSON(nameList)
 
 def fitnessLeaderboard():
+    nameList = loadJSON()
     leadEmbed = Embed(title='**Fitness Leaderboard**', color=0x23b356)
     leadEmbed.set_footer(text="Use ~fitness to add a workout!")
 
     for x in range(len(nameList)):
-        leadEmbed.add_field(name='**{}**'.format(nameList[x][0]), value=nameList[x][1], inline=True)
+        leadEmbed.add_field(name='**{}** - {} Wins'.format(nameList[str(x)][0], nameList[str(x)][3]), value=nameList[str(x)][1], inline=True)
 
     return leadEmbed
 
@@ -30,3 +40,12 @@ def fitMain(ctx):
         print("Sorry, that doesn't look like a valid number... Try running the command again.")
 
     updatePoints(ctx, (int((min / 700) * 100)))
+
+def fitResetBoard(ctx):
+    nameList = loadJSON()
+    check = ctx.message.author.mention
+    for x in range(len(nameList)):
+        if str(check) == nameList[str(x)][2]:
+            nameList[str(x)][1] = 0
+            writeJSON(nameList)
+            return nameList[str(x)][2]
