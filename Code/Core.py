@@ -78,7 +78,7 @@ async def fitboardreset(ctx):
     await ctx.send(embed=fitnessLeaderboard())
 
 
-# Other Per Message Commands
+# Other On Message Commands
 @bot.event
 async def on_message(message):
     if debugMessageLog == True:

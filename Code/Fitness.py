@@ -2,7 +2,7 @@ import json
 import os
 from discord import Embed
 
-jsonStorage = os.path.join(os.getcwd(), "Code", "FitnessStorage.json")
+jsonStorage = os.path.join(os.getcwd(), "Storage", "FitnessStorage.json")
 
 def loadJSON():
     with open(jsonStorage, "r+") as file:
@@ -37,7 +37,8 @@ def fitMain(ctx):
     try:
         min = int(new[1])
     except Exception:
-        print("Sorry, that doesn't look like a valid number... Try running the command again.")
+        ctx.send(content="Sorry, that doesn't look like a valid number... Try running the command again.")
+        return
 
     updatePoints(ctx, (int((min / 700) * 100)))
 
