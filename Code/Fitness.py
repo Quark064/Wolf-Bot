@@ -11,7 +11,7 @@ def loadJSON():
 
 def writeJSON(var):
     f = open(jsonStorage, "w")
-    f.write(json.dumps(var))
+    f.write(json.dumps(var, indent=4, sort_keys=True))
     f.close()
 
 def updatePoints(ctx, points):
