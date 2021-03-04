@@ -7,14 +7,52 @@ from config import fortniteAPIKey
 # Set Global Variables (Need to be used in 'mode' class and 'getStats')
 standardLayout = "Wins: *{wins}*\nWin Rate: *{winRate}%*\nKills: *{kills}*\nK/D: *{kd}*"
 divisor = 4
+contTypes = [
+    'switch',
+    'xbox',
+    'ps',
+    'ps4',
+    'playstation',
+    'gamepad',
+    'controller'
+    ]
+pcTypes = [
+    'pc',
+    'computer',
+    'keyboard',
+    'mouse',
+    'kbm'
+    ]
+touchTypes = [
+    'mobile',
+    'phone',
+    'touch',
+    'android',
+    'iphone',
+    'ios',
+    'samsung',
+    'apple'
+    ]
+all = [
+    'all',
+    'everything',
+    'everywhere'
+]
 
 
 class formatText:
     def __init__(self, ctx):
+        global contTypes, pcTypes, touchTypes, all
         splitstr = ctx.message.content.split(' ')
         length = len(splitstr)
-        self.epicID = (' '.join(splitstr[1:(length)-1]))
-        self.input = (''.join(splitstr[(length-1):length]))
+        verify = splitstr[length-1].lower()
+
+        if verify not in contTypes and verify not in pcTypes and verify not in touchTypes and verify not in all:
+            self.input = 'all'
+            self.epicID = (' '.join(splitstr[1:(length)]))
+        else:
+            self.input = (''.join(splitstr[(length-1):length]))
+            self.epicID = (' '.join(splitstr[1:(length)-1]))
 
 
 def getStats(epicName, input):
@@ -28,12 +66,14 @@ def getStats(epicName, input):
     encodedEpicName = quote(epicName)
     global standardLayout
     global divisor
+    global contTypes, pcTypes, touchTypes, all
 
     class mode():
 
         def __init__(self, mode, formalName):
             global standardLayout
             global divisor
+            global contTypes, pcTypes, touchTypes, all
             self.formalName = formalName
             try:
                 self.wins = data['stats'][mode]['top1']['value']
@@ -69,37 +109,6 @@ def getStats(epicName, input):
                     kd=self.KD
                     )
 
-    contTypes = [
-        'switch',
-        'xbox',
-        'ps',
-        'ps4',
-        'playstation',
-        'gamepad',
-        'controller'
-        ]
-    pcTypes = [
-        'pc',
-        'computer',
-        'keyboard',
-        'mouse',
-        'kbm'
-        ]
-    touchTypes = [
-        'mobile',
-        'phone',
-        'touch',
-        'android',
-        'iphone',
-        'ios',
-        'samsung',
-        'apple'
-        ]
-    all = [
-        'all',
-        'everything',
-        'everywhere'
-    ]
 
     # Check Input Type
     if lowerInput in contTypes:
@@ -151,7 +160,7 @@ def getStats(epicName, input):
     except Exception:
         dataEmbed = Embed(
             title="Error!",
-            description="Invalid Username",
+            description="Invalid Username/No Data",
             color=0xde2121
             )
         dataEmbed.set_thumbnail(
