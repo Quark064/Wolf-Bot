@@ -77,25 +77,35 @@ def leaderBoardXPFormat(definedNames):
     return scoreEmbed
 
 
-def getStats(epicName):
-    requestURL = (
-        'https://api.fortnitetracker.com/v1/profile/all/{name}'
-        .format(name=epicName)
-        )
-    token = fortniteAPIKey
-    request = get(url=requestURL, headers=token)
-    data = loads(request.text)
-    score = data['lifeTimeStats'][6]['value']
-    return int(score.replace(',', ''))
-
-
 # Fetches the info for names in nameList and places them in a Dictionary
 def getLeaderBoardXP(nameList):
     scoreboard = {}
+    prettyEpicName = ""
+
+    class getStats():
+
+        def __init__(self, epicName):
+            try:
+                requestURL = (
+                    'https://api.fortnitetracker.com/v1/profile/all/{name}'
+                    .format(name=epicName)
+                    )
+                token = fortniteAPIKey
+                request = get(url=requestURL, headers=token)
+                data = loads(request.text)
+                score = data['lifeTimeStats'][6]['value']
+
+                self.formattedEpicName = data['epicUserHandle']
+                self.formattedScore = int(score.replace(',', ''))
+
+            except Exception:
+                self.formattedEpicName = ":warning: {} (User Not Found)".format(epicName)
+                self.formattedScore = 0
 
     for x in range(len(nameList)):
-        scoreboard[nameList[x]] = getStats(nameList[x])
+        user = getStats(nameList[x])
+        scoreboard[user.formattedEpicName] = user.formattedScore
+
         # Sleep To Prevent API From Invalidating Request
         sleep(1)
-
     return scoreboard
