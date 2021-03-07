@@ -1,25 +1,28 @@
 from discord import Embed
 from discord.ext import commands
-from config import botKey
+from config import botKey, alphaBotKey
 from GetStats import getStats, formatText
 from Leaderboard import leaderBoardXPFormat, listMaker
 from PrimaryInput import getName, getPrimaryInput
-from NNN import leadEmbed, nnnFail, nnnReset
+from NNN import leadEmbed, nnnFail, nnnReset, isNov
 from Fitness import updatePoints, fitnessLeaderboard, fitMain, fitResetBoard
-
-bot = commands.Bot(command_prefix='~')
+from turtle import ontimer
 
 # Config Options
+prefix = '~'
 debugMessageLog = False
+useAlphaBot = False
 
 # Common Assets
 loadingEmbed = Embed(
     title="Loading...",
     description="This will take some time",
     color=0x1167b1)
-loadingEmbed.set_thumbnail(url="https://i.imgur.com/Hq39MdR.gif")
+loadingEmbed.set_thumbnail(url="https://i.imgur.com/GX6egvX.gif")
 
 # STARTUP CODE_____________________________________________________________
+bot = commands.Bot(command_prefix=prefix)
+
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
@@ -55,12 +58,15 @@ async def nnn(ctx):
 
 @bot.command()
 async def nnnfail(ctx):
-    await ctx.send(content='{} has failed!'.format(nnnFail(ctx)))
+    if isNov():
+        await ctx.send(content='{} has failed!'.format(nnnFail(ctx)))
     await ctx.send(embed=leadEmbed())
 
 @bot.command()
 async def nnnreset(ctx):
-    await ctx.send(content="{}'s status has been restored".format(nnnReset(ctx)))
+    if isNov():
+        await ctx.send(content="{}'s status has been restored".format(nnnReset(ctx)))
+    await ctx.send(embed=leadEmbed())
 
 # Fitness Challenge Commands
 @bot.command()
@@ -69,7 +75,7 @@ async def fitness(ctx):
     await ctx.send(embed=fitnessLeaderboard())
 
 @bot.command()
-async def fitleaderboard():
+async def fitleaderboard(ctx):
     await ctx.send(embed=fitnessLeaderboard())
 
 @bot.command()
@@ -109,4 +115,4 @@ def debugMessageLogFunction(message):
         print('Unknown Message/Error')
 
 # Run
-bot.run(botKey)
+bot.run(alphaBotKey if useAlphaBot == True else botKey)
