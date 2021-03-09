@@ -5,11 +5,12 @@ from GetStats import getStats, formatText
 from Leaderboard import leaderBoardXPFormat, listMaker
 from PrimaryInput import getName, getPrimaryInput
 from NNN import leadEmbed, nnnFail, nnnReset, isNov
-from Fitness import updatePoints, fitnessLeaderboard, fitMain, fitResetBoard
+from Fitness import updatePoints, fitnessLeaderboard, fitMain, fitResetBoard, endSeason
 from turtle import ontimer
 
 # Config Options
 prefix = '~'
+ownerID = '<@285571155950043137>'
 debugMessageLog = False
 useAlphaBot = False
 
@@ -82,6 +83,14 @@ async def fitleaderboard(ctx):
 async def fitboardreset(ctx):
     await ctx.send(content="{}'s points have been reset!".format(fitResetBoard(ctx)))
     await ctx.send(embed=fitnessLeaderboard())
+
+@bot.command()
+async def endseason(ctx):
+    if ctx.message.author.mention == ownerID:
+        await ctx.send(embed=endSeason())
+        await ctx.send(embed=fitnessLeaderboard())
+    else:
+        await ctx.send(content="You don't have permission to end the season!")
 
 
 # Other On Message Commands
