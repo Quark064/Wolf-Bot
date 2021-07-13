@@ -6,7 +6,6 @@ from Leaderboard import leaderBoardXPFormat, listMaker
 from PrimaryInput import getName, getPrimaryInput
 from NNN import leadEmbed, nnnFail, nnnReset, isNov
 from Fitness import updatePoints, fitnessLeaderboard, fitMain, fitResetBoard, endSeason
-from turtle import ontimer
 
 # Config Options
 prefix = '~'
